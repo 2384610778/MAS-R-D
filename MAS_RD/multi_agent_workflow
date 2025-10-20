@@ -1,0 +1,41 @@
+// 多智能体协作流程图
+digraph multi_agent_workflow {
+	fontname=SimHei fontsize=20 label="多智能体协作流程图" rankdir=TB
+	node [fontname=SimHei shape=box style="rounded,filled"]
+	edge [fontname=SimHei]
+	subgraph cluster_0_input {
+		color=lightgrey label="输入 Input" style=filled
+		start [label="开始: 输入专利列表
+Start: Input patent_list" fillcolor=lightblue shape=Mdiamond]
+	}
+	subgraph cluster_1_analysis {
+		color=lightyellow label="第1阶段: 并行情报分析
+Phase 1: Parallel Intelligence Analysis" style=filled
+		association [label=<<B>关联技术分析师</B><BR/>(Association Agent)<BR/><FONT POINT-SIZE="10">工具: find_associated_technologies</FONT>> fillcolor=palegreen]
+		emerging_theme [label=<<B>新兴主题分析师</B><BR/>(Emerging Theme Agent)<BR/><FONT POINT-SIZE="10">工具: get_technology_trend</FONT>> fillcolor=palegreen]
+		gap [label=<<B>技术空白分析师 (VC)</B><BR/>(Gap Agent)<BR/><FONT POINT-SIZE="10">工具: find_technology_gaps</FONT>> fillcolor=palegreen]
+	}
+	subgraph cluster_2_critic {
+		color=lightpink label="第2阶段: 批判性审查
+Phase 2: Critical Review" style=filled
+		critic [label=<<B>评审员</B><BR/>(Critic Agent)<BR/><FONT POINT-SIZE="10">审查三份报告并提出批判性意见</FONT>> fillcolor=mistyrose]
+	}
+	subgraph cluster_3_evaluation {
+		color=lightskyblue label="第3阶段: 综合评估与决策
+Phase 3: Synthesized Evaluation & Decision" style=filled
+		evaluation [label=<<B>评估与决策分析师 (战略家)</B><BR/>(Evaluation Agent)<BR/><FONT POINT-SIZE="10">综合所有信息, 并调用:<BR/>assess_technology_maturity<BR/>calculate_opportunity_score</FONT>> fillcolor=powderblue]
+	}
+	subgraph cluster_4_output {
+		color=lightgrey label="输出 Output" style=filled
+		end [label="结束: 输出最终决策报告
+End: Output final_report" fillcolor=lightblue shape=Mdiamond]
+	}
+	start -> association
+	start -> emerging_theme
+	start -> gap
+	association -> critic
+	emerging_theme -> critic
+	gap -> critic
+	critic -> evaluation
+	evaluation -> end
+}

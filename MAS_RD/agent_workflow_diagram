@@ -1,0 +1,28 @@
+// Multi-Agent Collaboration Workflow Diagram
+digraph Multi_Agent_Workflow {
+	fontname=SimHei fontsize=20 label="Multi-Agent Collaboration Workflow" rankdir=TB
+	node [fontname=SimHei shape=box style="rounded,filled"]
+	edge [fontname=SimHei]
+	Start [label="用户输入
+分析主题" fillcolor="#90EE90" shape=ellipse]
+	subgraph cluster_parallel_analysis {
+		color=grey fontname=SimHei label="并行分析 (Fan-out)" style=rounded
+		A [label="Association Agent
+(关联分析师)" fillcolor="#ADD8E6" shape=box]
+		B [label="Emerging Theme Agent
+(新兴主题分析师)" fillcolor="#ADD8E6" shape=box]
+		C [label="Technology Gap Agent
+(技术空白分析师)" fillcolor="#ADD8E6" shape=box]
+	}
+	D [label="Final Evaluation Agent
+(最终评估师)
+汇总、评分、总结" fillcolor="#FFA500" shape=Mdiamond]
+	End [label="生成最终分析报告" fillcolor="#90EE90" shape=ellipse]
+	Start -> A
+	Start -> B
+	Start -> C
+	A -> D
+	B -> D
+	C -> D
+	D -> End
+}

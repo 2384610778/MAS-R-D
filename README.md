@@ -18,33 +18,48 @@
 
 整个系统分为两个主要阶段：**离线数据处理** 和 **在线分析应用**。
 
-```mermaid
-graph TD
-    subgraph "Phase 1: 离线数据处理与知识库构建 (Offline Pipeline)"
-        A[专利数据 patents.xlsx] -->|结构化抽取| B(excel_to_json_Structured.py)
-        A -->|LLM非结构化抽取| C(excel_to_json_Unstructured.py)
-        B --> D[structured_data.json]
-        C --> E[unstructured_data.json]
-        D & E --> F(json_to_neo4j.py)
-        F --> G[(Neo4j 知识图谱)]
-        G --> H(vectorize_full_kg.py)
-        H --> I[(ChromaDB 向量库)]
-    end
+```text
+[ Phase 1: 离线数据处理与知识库构建 ]
 
-    subgraph "Phase 2: 在线分析与交互 (Online Application)"
-        J(User)
-        K[Streamlit UI (ui.py)]
-        L[LangGraph Multi-Agent System (main.py)]
++------------------------+
+| 专利数据 (patents.xlsx) |
++------------------------+
+        |
+        +--> (excel_to_json_Structured.py) --> [structured_data.json] --+
+        |                                                               |
+        +--> (excel_to_json_Unstructured.py) --> [unstructured_data.json] --+
+                                                                            |
+                                                                            v
+                                                                    (json_to_neo4j.py)
+                                                                            |
+                                                                            v
+                                                                +-----------------------+
+                                                                | Neo4j 知识图谱         |
+                                                                +-----------------------+
+                                                                            |
+                                                                            v
+                                                                  (vectorize_full_kg.py)
+                                                                            |
+                                                                            v
+                                                                +-----------------------+
+                                                                | ChromaDB 向量库        |
+                                                                +-----------------------+
 
-        J -- "1. 输入技术主题" --> K
-        K -- "2. 语义检索" --> I
-        I -- "3. 返回相关专利列表" --> K
-        J -- "4. 确认专利列表" --> K
-        K -- "5. 启动分析" --> L
-        L -- "6. 调用工具查询" --> G
-        L -- "7. 生成最终报告" --> K
-        K -- "8. 展示报告" --> J
-    end
+--------------------------------------------------------------------------------------------------
+
+[ Phase 2: 在线分析与交互 ]
+(使用阶段1构建的知识库)
+
++------+   1. 输入主题/4.确认列表   +--------------------+   5. 启动分析   +-------------------------+
+| User | <----------------------> | Streamlit UI       | ------------> | LangGraph 多智能体系统  |
++------+                          | (ui.py)            | <------------ | (main.py)               |
+                                  +--------------------+   7. 生成报告   +-------------------------+
+                                    |         ^                          | 6. 调用工具查询
+                                    | 2. 语义检索                         |
+                                    v         | 3. 返回专利列表             v
+                            +----------------+                  +----------------+
+                            | ChromaDB 向量库 |                  | Neo4j 知识图谱  |
+                            +----------------+                  +----------------+
 
 ## 🛠️ 技术栈
 

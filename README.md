@@ -21,25 +21,29 @@
 ```mermaid
 graph TD
     subgraph "Phase 1: 离线数据处理与知识库构建 (Offline Pipeline)"
-        A[专利数据 patents.xlsx] -->|结构化抽取| B(excel_to_json_Structured.py);
-        A -->|LLM非结构化抽取| C(excel_to_json_Unstructured.py);
-        B --> D{structured_data.json};
-        C --> E{unstructured_data.json};
-        D & E --> F(json_to_neo4j.py);
-        F --> G[(Neo4j 知识图谱)];
-        G --> H(vectorize_full_kg.py);
-        H --> I[(ChromaDB 向量库)];
+        A[专利数据 patents.xlsx] -->|结构化抽取| B(excel_to_json_Structured.py)
+        A -->|LLM非结构化抽取| C(excel_to_json_Unstructured.py)
+        B --> D[structured_data.json]
+        C --> E[unstructured_data.json]
+        D & E --> F(json_to_neo4j.py)
+        F --> G[(Neo4j 知识图谱)]
+        G --> H(vectorize_full_kg.py)
+        H --> I[(ChromaDB 向量库)]
     end
 
     subgraph "Phase 2: 在线分析与交互 (Online Application)"
-        J(User) -- 1. 输入技术主题 --> K{Streamlit UI (ui.py)};
-        K -- 2. 语义检索 --> I;
-        I -- 3. 返回相关专利列表 --> K;
-        J -- 4. 确认专利列表 --> K;
-        K -- 5. 启动分析 --> L{LangGraph Multi-Agent System (main.py)};
-        L -- 6. 调用工具查询 --> G;
-        L -- 7. 生成最终报告 --> K;
-        K -- 8. 展示报告 --> J;
+        J(User)
+        K{Streamlit UI (ui.py)}
+        L{LangGraph Multi-Agent System (main.py)}
+
+        J -- "1. 输入技术主题" --> K
+        K -- "2. 语义检索" --> I
+        I -- "3. 返回相关专利列表" --> K
+        J -- "4. 确认专利列表" --> K
+        K -- "5. 启动分析" --> L
+        L -- "6. 调用工具查询" --> G
+        L -- "7. 生成最终报告" --> K
+        K -- "8. 展示报告" --> J
     end
 ```
 

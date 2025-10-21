@@ -33,8 +33,8 @@ graph TD
 
     subgraph "Phase 2: 在线分析与交互 (Online Application)"
         J(User)
-        K{Streamlit UI (ui.py)}
-        L{LangGraph Multi-Agent System (main.py)}
+        K[Streamlit UI (ui.py)]
+        L[LangGraph Multi-Agent System (main.py)]
 
         J -- "1. 输入技术主题" --> K
         K -- "2. 语义检索" --> I
@@ -45,7 +45,6 @@ graph TD
         L -- "7. 生成最终报告" --> K
         K -- "8. 展示报告" --> J
     end
-```
 
 ## 🛠️ 技术栈
 
